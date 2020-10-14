@@ -29,8 +29,9 @@ use crate::{theme, Affine, Data, Insets, Lens, Point, Rect, SingleUse, WidgetExt
 type TabsScope<TP> = Scope<TabsScopePolicy<TP>, Box<dyn Widget<TabsState<TP>>>>;
 type TabBodyPod<TP> = WidgetPod<<TP as TabsPolicy>::Input, <TP as TabsPolicy>::BodyWidget>;
 type TabBarPod<TP> = WidgetPod<TabsState<TP>, Box<dyn Widget<TabsState<TP>>>>;
-type TabIndex = usize;
 type Nanos = u64;
+
+pub type TabIndex = usize;
 
 /// Information about a tab that may be used by the TabPolicy to
 /// drive the visual presentation and behaviour of its label
@@ -917,6 +918,16 @@ impl<TP: TabsPolicy> Tabs<TP> {
             TP::add_tab(tabs, name, child)
         } else {
             log::warn!("Can't add static tabs to a running or complete tabs instance!")
+        }
+    }
+
+    /// Return the index of the currently selected tab. If there are no tabs, or the tabs are
+    /// not initialized yet, returns `None`.
+    pub fn selected_tab_index(&self) -> Option<TabIndex> {
+        if let TabsContent::Running { scope } = &self.content {
+            scope.widget().state().map(|state| state.selected)
+        } else {
+            None
         }
     }
 

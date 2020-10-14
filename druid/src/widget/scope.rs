@@ -213,6 +213,15 @@ impl<SP: ScopePolicy, W: Widget<SP::State>> Scope<SP, W> {
         }
     }
 
+    pub fn state(&self) -> Option<&SP::State> {
+        match self.content {
+            ScopeContent::Transfer { ref state , .. }=> {
+                Some(state)
+            },
+            _ => None,
+        }
+    }
+
     fn with_state<V>(
         &mut self,
         data: &SP::In,
