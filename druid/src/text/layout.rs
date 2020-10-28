@@ -172,10 +172,8 @@ impl<T: TextStorage> TextLayout<T> {
 
     /// Set the text to display.
     pub fn set_text(&mut self, text: T) {
-        if self.text.is_none() || self.text.as_ref().unwrap().as_str() != text.as_str() {
-            self.text = Some(text);
-            self.layout = None;
-        }
+        self.text = Some(text);
+        self.layout = None;
     }
 
     /// Returns the [`TextStorage`] backing this layout, if it exists.
