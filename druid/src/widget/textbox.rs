@@ -322,8 +322,11 @@ impl<T: TextStorage + EditableText> Widget<T> for TextBox<T> {
         if !self.suppress_adjust_hscroll && !self.multiline {
             self.update_hscroll(ctx.size().width);
         }
-        if ctx.env_changed() && self.placeholder.needs_rebuild_after_update(ctx) {
-            ctx.request_layout();
+        if ctx.env_changed() {
+            ctx.request_paint();
+            if self.placeholder.needs_rebuild_after_update(ctx) {
+                ctx.request_layout();
+            }
         }
     }
 
