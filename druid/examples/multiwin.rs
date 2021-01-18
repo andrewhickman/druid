@@ -95,6 +95,9 @@ impl<W> Glow<W> {
 impl<W: Widget<State>> Widget<State> for Glow<W> {
     fn event(&mut self, ctx: &mut EventCtx, event: &Event, data: &mut State, env: &Env) {
         self.inner.event(ctx, event, data, env);
+
+        let menu = make_menu::<State>(data);
+        ctx.set_menu(menu);
     }
 
     fn lifecycle(&mut self, ctx: &mut LifeCycleCtx, event: &LifeCycle, data: &State, env: &Env) {
